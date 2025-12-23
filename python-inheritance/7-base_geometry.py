@@ -5,6 +5,8 @@
 class BaseGeometry:
     """Base geometry class."""
 
+    __init__ = object.__init__
+
     def area(self):
         raise Exception("area() is not implemented")
 
