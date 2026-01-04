@@ -27,6 +27,10 @@ class CustomObject:
             f"active={self.active}>"
         )
 
+    def display(self):
+        """Print the object for visual inspection (used by tests)."""
+        print(self)
+
 
 def serialize_and_save_to_file(data, filename):
     """
