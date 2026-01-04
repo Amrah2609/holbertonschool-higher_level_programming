@@ -41,9 +41,16 @@ class CustomObject:
 
     @staticmethod
     def deserialize(filename):
-        """Load a Pickle file and return the object."""
-        with open(filename, "rb") as f:
-            return pickle.load(f)
+        """Load a Pickle file and return the object. Returns None if file is empty or corrupted."""
+        try:
+            with open(filename, "rb") as f:
+                return pickle.load(f)
+        except (EOFError, pickle.UnpicklingError):
+            print(f"Warning: Failed to load object from '{filename}' (empty or corrupted).")
+            return None
+        except FileNotFoundError:
+            print(f"Warning: File '{filename}' does not exist.")
+            return None
 
 
 def serialize_and_save_to_file(data, filename):
@@ -54,5 +61,12 @@ def serialize_and_save_to_file(data, filename):
 
 def load_and_deserialize(filename):
     """Load a Pickle file and deserialize it into a Python object."""
-    with open(filename, "rb") as f:
-        return pickle.load(f)
+    try:
+        with open(filename, "rb") as f:
+            return pickle.load(f)
+    except (EOFError, pickle.UnpicklingError):
+        print(f"Warning: Failed to load object from '{filename}' (empty or corrupted).")
+        return None
+    except FileNotFoundError:
+        print(f"Warning: File '{filename}' does not exist.")
+        return None
