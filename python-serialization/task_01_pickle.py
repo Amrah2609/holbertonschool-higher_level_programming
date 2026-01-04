@@ -7,12 +7,25 @@ import pickle
 class CustomObject:
     """A simple custom object for testing Pickle serialization."""
 
-    def __init__(self, name, value):
+    def __init__(self, name, age, active):
+        """
+        Initialize CustomObject.
+
+        Args:
+            name (str): Name of the object
+            age (int): Age of the object
+            active (bool): Status flag
+        """
         self.name = name
-        self.value = value
+        self.age = age
+        self.active = active
 
     def __repr__(self):
-        return f"<CustomObject name={self.name} value={self.value}>"
+        return (
+            f"<CustomObject name={self.name} "
+            f"age={self.age} "
+            f"active={self.active}>"
+        )
 
 
 def serialize_and_save_to_file(data, filename):
