@@ -31,6 +31,17 @@ class CustomObject:
         """Print the object for visual inspection (used by tests)."""
         print(self)
 
+    def serialize(self, filename):
+        """Serialize this object to a file using Pickle."""
+        with open(filename, "wb") as f:
+            pickle.dump(self, f)
+
+    @staticmethod
+    def deserialize(filename):
+        """Load a Pickle file and return the object."""
+        with open(filename, "rb") as f:
+            return pickle.load(f)
+
 
 def serialize_and_save_to_file(data, filename):
     """
