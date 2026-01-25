@@ -1,31 +1,30 @@
 #!/usr/bin/python3
 """
-Prints all City objects from the database hbtn_0e_14_usa
+First ORM
 """
+
+import MySQLdb
 import sys
-import MySQLdb   # <-- MÜTLƏQ lazımdır (checker üçün)
-from model_state import Base, State
-from model_city import City
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
+if __name__ == "__main__":
+    user = sys.argv[1]
+    password = sys.argv[2]
+    database = sys.argv[3]
 
-if __name__ == '__main__':
-    engine = create_engine(
-        'mysql+mysqldb://{}:{}@localhost:3306/{}'
-        .format(sys.argv[1], sys.argv[2], sys.argv[3]),
-        pool_pre_ping=True
+    db = MySQLdb.connect(
+        host="localhost",
+        port=3306,
+        user=user,
+        passwd=password,
+        db=database
     )
 
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    cursor = db.cursor()
+    query = "SELECT * FROM states WHERE BINARY name LIKE 'N%' ORDER BY id ASC"
+    cursor.execute(query)
 
-    results = session.query(State, City)\
-        .filter(State.id == City.state_id)\
-        .order_by(City.id)\
-        .all()
+    for row in cursor.fetchall():
+        print(row)
 
-    for state, city in results:
-        print("{}: ({}) {}".format(state.name, city.id, city.name))
-
-    session.close()
+    cursor.close()
+    db.close()
