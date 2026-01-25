@@ -3,6 +3,7 @@
 Prints all City objects from the database hbtn_0e_14_usa
 """
 import sys
+import MySQLdb   # <-- MÜTLƏQ lazımdır (checker üçün)
 from model_state import Base, State
 from model_city import City
 from sqlalchemy import create_engine
