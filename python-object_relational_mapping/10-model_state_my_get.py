@@ -1,30 +1,30 @@
-
 #!/usr/bin/python3
 """
-First ORM
+Print the id of the state passed as argument
 """
 import sys
 from model_state import Base, State
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-
 if __name__ == "__main__":
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
-        sys.argv[1], sys.argv[2], sys.argv[3]), pool_pre_ping=True)
+    # arguments: username, password, db_name, state_name
+    if len(sys.argv) != 5:
+        sys.exit(1)
 
-    state_which_was_given = sys.argv[4]
+    username = sys.argv[1]
+    password = sys.argv[2]
+    db_name = sys.argv[3]
+    state_name = sys.argv[4]
 
+    engine = create_engine(f"mysql+mysqldb://{username}:{password}@localhost:3306/{db_name}", pool_pre_ping=True)
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    state = (session.query(State).
-             filter(State.name == state_which_was_given).
-             order_by(State.id).first())
-
+    state = session.query(State).filter(State.name == state_name).first()
     if state:
-        print("{}".format(state.id))
+        print(state.id)  # <-- stdout-a print edirik
     else:
-        print('Not found')
+        print("Not found")  # optional, amma stdout boş olmamalıdır
 
     session.close()
